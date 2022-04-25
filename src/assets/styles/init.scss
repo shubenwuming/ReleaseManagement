@@ -1,0 +1,44 @@
+/* 基础样式定义 */
+body,
+html,
+ul,
+li,
+p,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+img {
+  border: none;
+  font-size: 0;
+}
+a {
+  color: #71777d;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+ul,
+li {
+  list-style-type: none;
+}
+body {
+  position: relative;
+  min-width: 960px;
+  border: 0;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-family: "YouYuan", "Microsoft YaHei";
+}
