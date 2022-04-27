@@ -6,10 +6,9 @@
 </template>
 
 <style lang="scss" scope>
-html body #app {
-  width: 100vw;
-  height: 100vh;
-  background-color: pink;
-  // overflow: hidden;
-}
+  html, body, #app {
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
 </style>
