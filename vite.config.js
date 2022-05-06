@@ -5,7 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
-import {resolve} from 'path'
+import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -29,5 +29,16 @@ export default defineConfig({
         additionalData: '@import "./src/assets/styles/index.scss";' // 此处为字符串加分号；，多个文件分号分割
       }
     }
+  },
+  server: {
+    host: '0.0.0.0',
+    port: '3000',
+    proxy: { // 代理配置
+      '/v1/api': {
+        target: 'http://localhost:9200',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\v1\/api/, '')
+      },
+    },
   }
 })
