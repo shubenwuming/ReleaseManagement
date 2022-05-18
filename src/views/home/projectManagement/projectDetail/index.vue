@@ -2,20 +2,28 @@
 import Breadcrumb from './components/breadcrumb.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
-const route = useRoute()
-const router = useRouter()
 import {
   requestByDetail,
   requestByAdd,
   requestByEdit,
 } from '@/apis/projectManagement.js'
 import { ElMessage } from 'element-plus'
+
+const route = useRoute()
+const router = useRouter()
 /**
- * isAdd
- * 用途：判断新增还是修改(详情)
- * 取值：boolean ， ture:代表是新增，false代表是修改(详情)
+ * flag
+ * 用途：判断新增、修改、详情
+ * 取值：boolean ， ture:代表是新增，false代表是修改
  */
-const isAdd = ref(!route?.query?.id ? true : false)
+const flag = ref('add')
+if(route?.query?.flag === 'detail') {
+  flag.value = 'detail'
+} else if(route?.query?.flag === 'edit'){
+  flag.value = 'edit'
+}
+
+const nodeEnum = ref(['11.11.0', '16.13.0'])
 
 const breadcrumbList = ref(['项目管理', '项目详情'])
 
@@ -25,6 +33,8 @@ let form = ref({
   desc: '',
   people: '',
   status: '',
+  gitProjectName: '',
+  nodeEnv: ''
 })
 const rules = reactive({
   name: [{ required: true, message: 'name为必填项', trigger: 'blur' }],
@@ -34,8 +44,11 @@ const rules = reactive({
   desc: [{ required: true, message: 'desc为必填项', trigger: 'blur' }],
   people: [{ required: true, message: 'people为必填项', trigger: 'blur' }],
   status: [{ required: true, message: 'status为必填项', trigger: 'change' }],
+  gitProjectName: [{ required: true, message: 'name为必填项', trigger: 'blur' }]
 })
-const formRef = ref()
+const formRef = ref(null)
+
+
 
 // 获取详情信息
 const getDetailInfo = async () => {
@@ -67,13 +80,16 @@ const getDetailInfo = async () => {
     })
   }
 }
-if (isAdd.value) {
+
+if(flag.value === 'add') {
   breadcrumbList.value = ['项目管理', '新增项目']
-} else {
-  // 详情页代表需要调用接口获取当前信息
+} else if(flag.value === 'detail') {
+  breadcrumbList.value= ['项目管理', '项目详情']
+  getDetailInfo()
+} else if(flag.value === 'edit') {
+  breadcrumbList.value= ['项目管理', '编辑项目']
   getDetailInfo()
 }
-
 // 新增
 const add = async () => {
   try {
@@ -154,9 +170,9 @@ const submitForm = () => {
   formRef.value.validate(valid => {
     if (valid) {
       // form校验通过的逻辑
-      if (isAdd.value) {
+      if (flag.value === 'add') {
         add()
-      } else {
+      } else if(flag.value === 'edit') {
         edit()
       }
     } else {
@@ -178,17 +194,29 @@ const submitForm = () => {
       class="myForm"
       label-width="100px"
       label-position="left"
+      :disabled="flag === 'detail'"
     >
       <el-form-item label="项目名称：" prop="name">
-        <el-input clearable v-model="form.name" />
+        <el-input style="width: 300px" clearable v-model="form.name" />
       </el-form-item>
 
-      <!-- 这个地方有问题， 新增的话有问题 -->
-      <el-form-item label="所属git库" prop="gitRepository">
-        <el-select v-model="form.gitRepository" clearable>
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
+      <el-form-item label="文件夹名：" prop="gitProjectName">
+        <el-input style="width: 300px" clearable v-model="form.gitProjectName" />
+      </el-form-item>
+
+      <el-form-item label="node版本：" prop="gitProjectName">
+        <el-select
+          v-model="form.nodeEnv"
+          style="width: 300px"
+          placeholder="请选择node版本"
+          clearable
+        >
+          <el-option v-for="item in nodeEnum" :key="item" :label="item" :value="item" />
         </el-select>
+      </el-form-item>
+
+      <el-form-item label="所属git库" prop="gitRepository">
+        <el-input style="width: 300px" clearable v-model="form.gitRepository" />
       </el-form-item>
 
       <el-form-item label="简介" prop="desc">
@@ -207,8 +235,8 @@ const submitForm = () => {
       </el-form-item>
 
       <el-form-item>
-        <el-button type="info" @click="submitForm">
-          {{ isAdd ? '新增' : '修改' }}
+        <el-button v-if="flag !== 'detail'" type="info" @click="submitForm">
+          {{ flag === 'add' ? '新增' : flag === 'edit' ? '编辑' : '详情'}} 
         </el-button>
       </el-form-item>
     </el-form>

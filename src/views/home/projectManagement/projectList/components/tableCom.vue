@@ -17,7 +17,7 @@ const jumpDetail = row => {
   router.push({
     name: 'projectDetail',
     params: { project: row.name },
-    query: { name: row.name, id: row.id, status: row.status },
+    query: { id: row.id, flag: 'detail' },
   })
 }
 
@@ -78,11 +78,25 @@ const unuseHandler = row => {
       <template #default="scope">
         <router-link
           class="myLink"
-          :to="{ name: 'projectDetail', params: { project: scope.row.name } }"
+          :to="{ name: 'projectDetail', params: { project: scope.row.name }, query: { id: scope.row.id, flag: 'edit' }, }"
           >{{ scope.row.name }}</router-link
         >
       </template>
     </el-table-column>
+
+    <el-table-column
+      show-overflow-tooltip
+      align="center"
+      label="文件夹名"
+      prop="gitProjectName"
+    />
+    
+    <el-table-column
+      show-overflow-tooltip
+      align="center"
+      label="所属git库"
+      prop="gitRepository"
+    />
 
     <el-table-column
       show-overflow-tooltip
@@ -93,8 +107,8 @@ const unuseHandler = row => {
     <el-table-column
       show-overflow-tooltip
       align="center"
-      label="所属git库"
-      prop="gitRepository"
+      label="node版本"
+      prop="nodeEnv"
     />
 
     <el-table-column label="操作按钮" show-overflow-tooltip align="center">
