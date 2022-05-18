@@ -20,12 +20,16 @@
   <el-table :data="props.tableData" border style="width: 100%">
     <el-table-column show-overflow-tooltip align="center" label="项目名称">
       <template #default="scope">
-        <router-link class="myLink" :to="{ name: 'publishDetail', params: { project:  scope.row.name}}">{{scope.row.name}}</router-link>
+        <router-link class="myLink" :to="{ name: 'publishDetail', params: { project:  scope.row.id}}">{{scope.row.name}}</router-link>
       </template>
     </el-table-column>
 
-     <el-table-column show-overflow-tooltip align="center" label="简介" prop="description" />
-
+    <el-table-column
+      show-overflow-tooltip
+      align="center"
+      label="项目简介"
+      prop="desc"
+    />
 
     <el-table-column label="操作按钮" show-overflow-tooltip align="center">
       <template #default="scope">

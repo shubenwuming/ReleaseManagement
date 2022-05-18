@@ -2,8 +2,9 @@
 import { ArrowRight, Search } from '@element-plus/icons-vue'
 import Breadcrumb  from './components/breadcrumb.vue'
 import TableCom from './components/tableCom.vue'
+import { requestByGetProjectList } from '@/apis/projectManagement.js'
 
-import {ref} from 'vue'
+import {ref, reactive} from 'vue'
 
 const breadcrumbList = [
   {path: { name: 'projectList' }, value: '发布管理'},
@@ -11,21 +12,10 @@ const breadcrumbList = [
 ]
 
 const search = ref('')
-const onSearch = () => {
-  console.log('search', search.value)
-}
 
 
-const tableData = [
-  {
-    name: 'ruyi-h5',
-    description: '如意如意如意如意如意如意如意如意如意如意如意如意',
-  },
-  {
-    name: 'nearby-shop',
-    description: '附近',
-  }
-]
+
+const tableData = ref([])
 // const tableHead = [
 //   {
 //     prop: 'name',
@@ -40,8 +30,42 @@ const tableData = [
 //     label: '操作按钮'
 //   },
 // ]
-
-
+// 获取项目列表
+const getProjectList = async params => {
+  try {
+    const {
+      status,
+      data: { message, result: res },
+    } = await requestByGetProjectList(params)
+    if (status === 200) {
+      tableData.value = res
+    } else {
+      ElMessage({
+        type: 'error',
+        message: message,
+        showClose: true,
+        center: true,
+        grouping: true,
+      })
+    }
+  } catch (e) {
+    ElMessage({
+      type: 'error',
+      message: e.message || '请求失败',
+      showClose: true,
+      center: true,
+      grouping: true,
+    })
+  }
+}
+const form = reactive({
+  name: '',
+})
+// 过滤查询
+const onSearch = () => {
+  getProjectList(form)
+}
+onSearch()
 </script>
 
 <template>
