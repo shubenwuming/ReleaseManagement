@@ -8,12 +8,26 @@ import 'default-passive-events'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import 'element-plus/theme-chalk/el-message.css';
 import 'element-plus/theme-chalk/el-message-box.css';
-
+// import VueSocketIO from 'vue-3-socket.io';
+// import io from 'socket.io-client';
+// const socketio = new VueSocketIO({
+//     debug: true,
+//     connection: io('http://localhost:9200',{ transports : ['websocket'] }),
+//     extraHeaders: {"Access-Control-Allow-Origin": '*'},
+// });
+import SocketIO from './utils/io'
 
 import router from '@/router/index'
 
 createApp(App)
   .use(router)
   .use(ElMessage)
-  .use(ElMessage)
+  .use(ElMessageBox)
+  .use(SocketIO, {
+    connection: 'http://localhost:9200',
+    options: {
+      autoConnect: false, //关闭自动连接
+      // ...其它选项
+    },
+  })
   .mount('#app')
