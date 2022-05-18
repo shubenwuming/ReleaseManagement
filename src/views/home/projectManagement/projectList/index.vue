@@ -2,25 +2,18 @@
 import { reactive, onMounted, ref } from 'vue'
 import breadcrumb from './components/breadcrumb.vue'
 import tableCom from './components/tableCom.vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
 
 import { requestByGetProjectList } from '@/apis/projectManagement.js'
 import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const form = reactive({
   name: '',
   status: '', // 使用、弃用
 })
 
-let tableData = ref([
-  // {
-  //   name: 'ruyi-h5',
-  //   status: '使用',
-  //   desc: '如意',
-  //   gitRepository: 'ruyi-h5',
-  // }
-])
+let tableData = ref([])
 
 // 获取项目列表
 const getProjectList = async params => {
@@ -30,6 +23,7 @@ const getProjectList = async params => {
       data: { message, result: res },
     } = await requestByGetProjectList(params)
     if (status === 200) {
+      console.log('res: ', res);
       tableData.value = res
     } else {
       ElMessage({
