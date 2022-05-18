@@ -107,8 +107,8 @@ const unuseHandler = row => {
     <el-table-column
       show-overflow-tooltip
       align="center"
-      label="所属git库"
-      prop="gitRepository"
+      label="node版本"
+      prop="nodeEnv"
     />
 
     <el-table-column label="操作按钮" show-overflow-tooltip align="center">
