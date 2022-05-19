@@ -4,7 +4,7 @@
 
   import Breadcrumb from './compontents/breadcrumb.vue'
   import TableCom from './compontents/tableCom.vue'
-import VueSocketIO from "vue-socket.io";
+  import VueSocketIO from "vue-socket.io";
   import { getPublishList, deployPublish } from '@/apis/publishManagement.js'
   
   const route = useRoute();
@@ -105,13 +105,13 @@ import VueSocketIO from "vue-socket.io";
     <!-- search -->
     <el-form class="myForm" :model="form" label-width="80px" label-position="left">
       <el-form-item label="选择分支:">
-        <el-radio-group v-model="form.branchName">
+        <el-radio-group v-model="form.branchName" @change="onSearch">
           <el-radio label="test" />
           <el-radio label="test_tmp" />
         </el-radio-group>
       </el-form-item>
       <el-form-item label="选择环境:">
-        <el-radio-group v-model="form.envType">
+        <el-radio-group v-model="form.envType" @change="onSearch">
           <el-radio label="test" />
           <el-radio label="pre" />
           <el-radio label="prod" />

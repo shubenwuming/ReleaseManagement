@@ -34,17 +34,21 @@ let form = ref({
   people: '',
   status: '',
   gitProjectName: '',
-  nodeEnv: ''
+  nodeEnv: '',
+  buildFolder: '',
+  buildHtml: ''
 })
 const rules = reactive({
   name: [{ required: true, message: 'name为必填项', trigger: 'blur' }],
   gitRepository: [
     { required: true, message: 'gitRepository为必填项', trigger: 'change' },
   ],
+  gitProjectName: [{ required: true, message: 'gitProjectName为必填项', trigger: 'blur' }],
   desc: [{ required: true, message: 'desc为必填项', trigger: 'blur' }],
   people: [{ required: true, message: 'people为必填项', trigger: 'blur' }],
   status: [{ required: true, message: 'status为必填项', trigger: 'change' }],
-  gitProjectName: [{ required: true, message: 'name为必填项', trigger: 'blur' }]
+  buildFolder: [{ required: true, message: 'buildFolder为必填项', trigger: 'blur' }],
+  buildHtml: [{ required: true, message: 'buildHtml为必填项', trigger: 'blur' }],
 })
 const formRef = ref(null)
 
@@ -200,8 +204,24 @@ const submitForm = () => {
         <el-input style="width: 300px" clearable v-model="form.name" />
       </el-form-item>
 
+      <el-form-item label="简介" prop="desc">
+        <el-input clearable v-model="form.desc" type="textarea" />
+      </el-form-item>
+      
+      <el-form-item label="所属git库" prop="gitRepository">
+        <el-input style="width: 300px" clearable v-model="form.gitRepository" />
+      </el-form-item>
+
       <el-form-item label="文件夹名：" prop="gitProjectName">
         <el-input style="width: 300px" clearable v-model="form.gitProjectName" />
+      </el-form-item>
+
+      <el-form-item label="打包产物html名称" prop="buildHtml">
+        <el-input style="width: 300px" clearable v-model="form.buildHtml" />
+      </el-form-item>
+
+      <el-form-item label="打包产物文件夹名称" prop="buildFolder">
+        <el-input style="width: 300px" clearable v-model="form.buildFolder" />
       </el-form-item>
 
       <el-form-item label="node版本：" prop="gitProjectName">
@@ -215,13 +235,9 @@ const submitForm = () => {
         </el-select>
       </el-form-item>
 
-      <el-form-item label="所属git库" prop="gitRepository">
-        <el-input style="width: 300px" clearable v-model="form.gitRepository" />
-      </el-form-item>
+   
 
-      <el-form-item label="简介" prop="desc">
-        <el-input clearable v-model="form.desc" type="textarea" />
-      </el-form-item>
+      
 
       <el-form-item label="维护人员" prop="people">
         <el-input clearable v-model="form.people" type="textarea" />
